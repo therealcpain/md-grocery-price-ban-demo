@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MD Grocery Price Ban Clock — Oct 1 2026 personalized-pricing ban</title>
+  <meta name="description" content="Paste Maryland shopper? yes/no, large grocery (≥15,000 sq ft) / third-party food delivery / other merchant, and view date. One shareable card: days until Oct 1 ban / ban live / not covered. Cite Chapter 154 HB 895. Not legal advice. AG Consumer Protection only.">
+  <meta name="theme-color" content="#0b0f14">
+  <meta property="og:title" content="MD Grocery Price Ban Clock">
+  <meta property="og:description" content="Maryland shopper? Days until the Oct 1 grocery personalized-pricing ban. Cite Chapter 154 HB 895. Not legal advice.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">MD</div>
+        <div>
+          <h1>MD Grocery Price Ban Clock</h1>
+          <p class="tagline">Paste MD shopper + grocery/delivery chip + view date → days until Oct&nbsp;1 ban / ban live / not covered · share card.</p>
+        </div>
+      </div>
+      <span class="badge">Not legal advice</span>
+    </header>
+
+    <aside class="myth-banner" role="note">
+      <strong>Disclaimer.</strong>
+      This card is <em>effective-date literacy</em> —
+      <strong>not</strong> legal advice, <strong>not</strong> a price scrape, <strong>not</strong> a class-action lead-gen funnel, and <strong>not</strong> a determination that any named chain violates the statute.
+      We <strong>never invent</strong> a named chain’s personalization status or allege Section&nbsp;5 violations.
+      <strong>Distinct from Personalized Price Disclosure</strong> (national FTC proposed disclosure triad ≠ Maryland food-retail ban).
+      Public framing: Maryland <strong>Chapter&nbsp;154 (HB&nbsp;895)</strong> — food retailers (≥<strong>15,000</strong> sq&nbsp;ft selling tax-exempt food) and third-party food delivery providers may not set a personalized <em>higher</em> price from personal data; loyalty / subscription / consented exceptions exist — <strong>not a blanket price-freeze</strong>.
+      Enforcement: <strong>AG Consumer Protection Division</strong> after a <strong>45-day cure</strong>; <strong>no private right of action</strong> on §13–321.
+      Effective <strong>Oct&nbsp;1&nbsp;2026</strong>.
+      Sources:
+      <a href="https://mgaleg.maryland.gov/2026RS/Chapters_noln/CH_154_hb0895e.pdf" target="_blank" rel="noopener noreferrer">Chapter 154 (HB 895) PDF</a>
+      ·
+      <a href="https://www.morganlewis.com/pubs/2026/04/maryland-enacts-hb-895-becoming-first-state-to-restrict-personalized-pricing-in-the-food-sector" target="_blank" rel="noopener noreferrer">Morgan Lewis Apr 29 2026</a>
+      ·
+      <a href="https://iapp.org/news/a/maryland-enacts-a-first-of-its-kind-surveillance-pricing-law-but-there-are-loopholes" target="_blank" rel="noopener noreferrer">IAPP Apr 2026</a>.
+    </aside>
+
+    <section class="panel lookup" aria-labelledby="lookup-heading">
+      <h2 id="lookup-heading">1. Paste your shopper flags</h2>
+      <p class="hint">
+        User paste only — <strong>no</strong> grocery / Instacart price scrape.
+        Empty or missing view date → honest miss (we will not invent days left).
+        Never invent a named chain’s personalization status.
+      </p>
+
+      <div class="field-grid four">
+        <div>
+          <label for="mdShopper">Maryland shopper?</label>
+          <select id="mdShopper">
+            <option value="">— select —</option>
+            <option value="yes">Yes — Maryland shopper</option>
+            <option value="no">No — not Maryland</option>
+          </select>
+        </div>
+        <div>
+          <label for="channel">Context chip</label>
+          <select id="channel">
+            <option value="">— select —</option>
+            <option value="grocery">Large grocery (≥15,000 sq ft)</option>
+            <option value="delivery">Third-party food delivery</option>
+            <option value="other">Other merchant</option>
+          </select>
+        </div>
+        <div>
+          <label for="viewDate">View date (when you’re looking)</label>
+          <input id="viewDate" type="date" required />
+        </div>
+        <div>
+          <label for="noteLabel">Note label (optional)</label>
+          <input id="noteLabel" type="text" maxlength="64" placeholder="e.g. Redacted · family chat" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="cardBtn">Show ban clock</button>
+        <button type="button" class="btn" id="clearBtn">Clear</button>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+
+      <h3 class="subhead">Seed examples (teaching dates)</h3>
+      <div class="seed-chips" id="seedChips" role="list" aria-label="Seed MD grocery price ban examples"></div>
+    </section>
+
+    <section class="panel card-panel" aria-labelledby="card-heading" id="cardSection" hidden>
+      <div class="card-toolbar">
+        <h2 id="card-heading">2. Shareable ban clock</h2>
+        <div class="actions">
+          <button type="button" class="btn" id="copySummary">Copy summary</button>
+          <button type="button" class="btn" id="shareBtn">Share link</button>
+          <button type="button" class="btn" id="pngBtn">Export PNG</button>
+        </div>
+      </div>
+
+      <!-- PRIMARY VISUAL: ban-countdown card — giant text-primary status -->
+      <article class="renewal-card" id="deadlineCard" aria-labelledby="dlHeadline">
+        <header class="card-head">
+          <div>
+            <p class="brand-line">MD Grocery Price Ban Clock</p>
+            <p class="meta-line" id="cardMeta">—</p>
+            <h3 id="dlHeadline">Days until the Oct 1 ban?</h3>
+          </div>
+          <div class="verdict" id="statusBadge">
+            <span class="verdict-k" id="statusPill">—</span>
+            <span class="verdict-s" id="statusSub">Text-labeled · not color-only</span>
+          </div>
+        </header>
+
+        <div class="hero-row">
+          <div class="hero-stat cy-lead">
+            <span class="hero-kicker">Your ban clock</span>
+            <div class="face-allin-line" aria-label="Status badge">
+              <span class="face-was"><span class="face-was-k">View date</span> <span id="viewDateDisp">—</span></span>
+              <span class="face-arrow" aria-hidden="true">→</span>
+              <span class="hero-value" id="daysDisp">—</span>
+            </div>
+            <span class="hero-sub" id="deadlineLine">Ban effective Oct 1 2026 · Chapter 154 (HB 895)</span>
+          </div>
+          <div class="hero-stat fee ring-stat">
+            <span class="hero-kicker">Status badge</span>
+            <div class="ring-wrap" aria-hidden="true">
+              <div class="fee-ring" id="daysRing" style="--pct:0"></div>
+              <div class="ring-center">
+                <span class="hero-value" id="daysRingDisp">—</span>
+              </div>
+            </div>
+            <span class="hero-sub" id="windowLine">—</span>
+          </div>
+        </div>
+
+        <p class="look-enroll-flag" id="actionFlag" aria-live="polite">—</p>
+
+        <p class="look-enroll-flag" id="scopeChipStrip" aria-live="polite">
+          Food retailer (≥15,000 sq ft) + third-party food delivery: personalized higher price from personal data generally prohibited
+        </p>
+
+        <p class="look-enroll-flag warn" id="exceptionStrip" aria-live="polite">
+          Loyalty / subscription / consented-discount exceptions exist — not a blanket price-freeze
+        </p>
+
+        <p class="look-enroll-flag" id="enforceStrip" aria-live="polite">
+          Maryland Chapter 154 (HB 895) · AG Consumer Protection Division · no private right of action on §13–321 · 45-day cure before AG enforcement
+        </p>
+
+        <div class="receipt-strip four" id="receiptStrip" aria-label="Status breakdown">
+          <div class="r-item"><span class="r-k">MD shopper?</span><span class="r-v" id="rMd">—</span></div>
+          <div class="r-item"><span class="r-k">Channel</span><span class="r-v" id="rChannel">—</span></div>
+          <div class="r-item"><span class="r-k">Ban status</span><span class="r-v" id="rStatus">—</span></div>
+          <div class="r-item"><span class="r-k">View date</span><span class="r-v" id="rView">—</span></div>
+        </div>
+
+        <p class="decoder-line" id="decoderLine">—</p>
+        <p class="action-line" id="actionLine">—</p>
+        <p class="cite-line" id="citeLine">—</p>
+
+        <footer class="card-foot">
+          <span>User-pasted chips · no price scrape</span>
+          <span>Not legal advice · AG-only · never invent chain status · ≠ FTC disclosure</span>
+        </footer>
+      </article>
+
+      <div class="share-box" id="shareBox" hidden>
+        <label for="shareUrl">Share URL (hash restores your pasted fields)</label>
+        <div class="row">
+          <input id="shareUrl" type="text" readonly />
+          <button type="button" class="btn" id="copyShare" style="flex:0 0 auto">Copy</button>
+        </div>
+        <p class="hint">Append UTM when you post, e.g. <code>?utm_source=reddit&amp;utm_medium=organic&amp;utm_campaign=md_grocery_price_ban_mvp</code></p>
+      </div>
+
+      <div class="source-links" id="sourceLinks"></div>
+    </section>
+
+    <section class="panel legend" aria-labelledby="legend-heading">
+      <h2 id="legend-heading">How to read the card</h2>
+      <ul class="legend-list">
+        <li><span class="pill allin">Giant status</span> Text-primary (not color-only): <strong>days until Oct&nbsp;1 ban</strong> / <strong>ban live</strong> / <strong>not covered</strong> (non-MD / non-food-retailer).</li>
+        <li><span class="pill fee">Scope chip</span> Food retailer (≥15,000&nbsp;sq&nbsp;ft) + third-party food delivery: personalized higher price from personal data generally prohibited.</li>
+        <li><span class="pill claim">Exceptions</span> Loyalty / subscription / consented-discount exceptions exist — <strong>not a blanket price-freeze</strong>.</li>
+        <li><strong>Enforcement</strong> Maryland Chapter&nbsp;154 (HB&nbsp;895) + AG Consumer Protection Division; <strong>no private right of action</strong> on §13–321; 45-day cure before AG enforcement.</li>
+        <li><strong>Distinct</strong> from Personalized Price Disclosure (national FTC proposed disclosure ≠ MD food ban).</li>
+        <li><strong>No invented chain status.</strong> Empty view date = honest miss. No price scrape. Never allege Section&nbsp;5 violations.</li>
+      </ul>
+    </section>
+
+    <div class="ad-slot" aria-hidden="true">
+      <span class="ad-label">Ad slot (placeholder — AdSense later)</span>
+      <p>Inventory under the clock card + “what does Maryland’s grocery personalized-pricing ban actually cover?” explainer · brand-safe display only · never inside PNG · not legal advice · hard-avoid class-action lead-gen · AG Consumer Protection pointer only</p>
+    </div>
+
+    <footer>
+      <strong>MD Grocery Price Ban Clock</strong> — effective-date-honest share card for Maryland’s Chapter&nbsp;154 (HB&nbsp;895) food-retail personalized-pricing ban.
+      <ul>
+        <li>MD shopper? · grocery / delivery / other · view date → ban clock card</li>
+        <li>User paste only · zero scrape · not legal advice · AG-only · never invent chain status</li>
+        <li>Free utility · ad-supported path (see README) · no paywall</li>
+      </ul>
+    </footer>
+    <canvas id="pngCanvas" width="900" height="1200" hidden aria-hidden="true"></canvas>
+  </div>
+</body>
+</html>
