@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- goatcounter-site: mdgroceryban · instrumented 2026-09-18 -->
+  <script data-goatcounter="https://mdgroceryban.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
   <title>MD Grocery Price Ban Clock — Oct 1 2026 personalized-pricing ban</title>
   <meta name="description" content="Paste Maryland shopper? yes/no, large grocery (≥15,000 sq ft) / third-party food delivery / other merchant, and view date. One shareable card: days until Oct 1 ban / ban live / not covered. Cite Chapter 154 HB 895. Not legal advice. AG Consumer Protection only.">
   <meta name="theme-color" content="#0b0f14">
@@ -82,7 +85,7 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="btn btn-primary" id="cardBtn">Show ban clock</button>
+        <button type="button" class="btn btn-primary" id="cardBtn" onclick="window.goatcounter &amp;&amp; goatcounter.count({path: '/cta/generate', title: 'Generate card', event: true})">Show ban clock</button>
         <button type="button" class="btn" id="clearBtn">Clear</button>
       </div>
       <p class="status" id="status" aria-live="polite"></p>
